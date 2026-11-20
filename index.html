@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>건강 더하기 가족 인증서</title>
+<meta name="description" content="우리 가족 별칭을 입력하고 '건강 더하기 가족' 인증서를 받아 보세요.">
+<meta property="og:title" content="건강 더하기 가족 인증서">
+<meta property="og:description" content="우리 가족은 이제 '건강 더하기 가족'이에요! 인증서를 받아 보세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#00C987; --green-dark:#00A06B; --green-soft:#E3F8EF;
+    --yellow:#FFC93C; --pink:#FF8A8A; --ink:#1F2D2A; --muted:#5B6B66;
+    --bg:#EDF5E3; --sky:#CEEAF9; --card:#FFFFFF; --line:#D5E6C6;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;-webkit-text-size-adjust:100%}
+  .wrap{max-width:560px;margin:0 auto;padding:24px 16px 48px}
+  header{text-align:center;padding:8px 0 4px}
+  .logo-slot{height:36px;display:flex;justify-content:center;align-items:center;margin-bottom:8px}
+  .logo-slot img{max-height:36px;max-width:200px}
+  .hero{width:220px;max-width:60%;display:block;margin:4px auto 0}
+  h1{font-family:"Jua",sans-serif;font-weight:400;font-size:32px;line-height:1.25;margin:10px 0 6px;letter-spacing:-.5px}
+  h1 .plus{color:var(--green)}
+  .lead{color:var(--muted);font-size:16px;line-height:1.6;margin:0 0 20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 6px 24px rgba(0,120,80,.06)}
+  label{display:block;font-family:"Jua",sans-serif;font-size:19px;margin-bottom:10px}
+  .field{display:flex;align-items:center;gap:8px;border:2px solid var(--line);border-radius:14px;padding:4px 14px;background:#fff;transition:border-color .15s}
+  .field:focus-within{border-color:var(--green)}
+  .field input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:20px;padding:12px 0;background:transparent;color:var(--ink)}
+  .field .suffix{font-family:"Jua",sans-serif;font-size:20px;color:var(--green-dark)}
+  .hint{font-size:14px;color:var(--muted);margin:8px 2px 0;display:flex;justify-content:space-between;gap:8px}
+  .ex-label{font-size:14px;font-weight:700;color:var(--ink);margin:12px 2px 0}
+  .ex-label span{font-weight:400;color:var(--muted)}
+  .examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .chip{border:1px solid #B5DCF1;background:var(--sky);color:#1F4F66;border-radius:999px;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:14px;padding:16px;font-family:"Jua",sans-serif;font-size:20px;cursor:pointer;transition:transform .05s,filter .15s}
+  .btn:active{transform:scale(.99)}
+  .btn-primary{background:var(--green);color:#fff;margin-top:18px}
+  .btn-primary:hover{filter:brightness(.96)}
+  .btn-primary:disabled{background:#BFE9D8;cursor:not-allowed}
+  .btn-ghost{background:#fff;color:var(--ink);border:2px solid var(--line)}
+  .result{display:none;margin-top:24px}
+  .result.show{display:block}
+  .preview{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.12);background:#fff}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .actions .btn{font-size:18px;padding:14px}
+  .actions .btn-primary{margin-top:0}
+  .save-tip{font-size:14px;color:var(--muted);text-align:center;margin:12px 0 0;line-height:1.5}
+  .again{margin-top:10px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px;line-height:1.6}
+  .err{color:#D64545;font-size:14px;margin:8px 2px 0;min-height:1em}
+  @media (max-width:380px){h1{font-size:28px}.actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo-slot" id="logoSlot"></div>
+    <img class="hero" src="assets/both_heart.png" alt="웰리와 키미">
+    <h1>우리 가족은 이제<br>'건강 <span class="plus">더하기</span> 가족'이에요</h1>
+    <p class="lead">가족 별칭을 적으면 웰리와 키미가<br>인증서를 만들어 드려요.</p>
+  </header>
+
+  <section class="card" id="formCard">
+    <form id="form" autocomplete="off" novalidate>
+      <label for="nick">우리 가족 별칭</label>
+      <div class="field">
+        <input id="nick" name="nick" type="text" maxlength="12" placeholder="예) 튼튼 쑥쑥" enterkeyhint="done" required>
+        <span class="suffix">가족</span>
+      </div>
+      <div class="hint"><span>최대 12자</span><span id="count">0 / 12</span></div>
+      <div class="err" id="err" role="alert"></div>
+      <p class="ex-label">💡 별칭 예시 <span>(누르면 입력돼요)</span></p>
+      <div class="examples" aria-label="별칭 예시">
+        <button type="button" class="chip">튼튼 쑥쑥</button>
+        <button type="button" class="chip">하하호호</button>
+        <button type="button" class="chip">매일 만보</button>
+        <button type="button" class="chip">채소 사랑</button>
+      </div>
+      <button class="btn btn-primary" id="makeBtn" type="submit">인증서 만들기</button>
+    </form>
+  </section>
+
+  <section class="result" id="result" aria-live="polite">
+    <img class="preview" id="preview" alt="건강 더하기 가족 인증서">
+    <div class="actions">
+      <button class="btn btn-primary" id="saveBtn" type="button">이미지 저장</button>
+      <button class="btn btn-ghost" id="shareBtn" type="button">공유하기</button>
+    </div>
+    <p class="save-tip">저장이 안 되면 인증서 이미지를 <b>길게 눌러</b> 저장해 주세요.</p>
+    <button class="btn btn-ghost again" id="againBtn" type="button">다른 별칭으로 다시 만들기</button>
+  </section>
+
+  <footer>입력한 별칭은 어디에도 저장되지 않아요.<br>인증서는 이 기기에서만 만들어집니다.</footer>
+</div>
+
+<canvas id="cv" width="1200" height="1700" hidden></canvas>
+
+<script>
+(() => {
+  // ===== 설정 =====
+  // 재단 로고 (페이지 상단과 인증서 맨 위에 표시)
+  const LOGO_SRC = "assets/logo.webp";
+  const ISSUER = "웰리 & 키미 드림";  // 인증서 하단 발급자 문구
+  const BODY = ["위 가족은 함께 건강한 습관을 실천하며", "서로의 하루에 건강을 더해 가는", "'건강 더하기 가족'임을 인증합니다."];
+  const FOOTER = "오늘도 함께 웃고, 함께 움직이고, 함께 건강해져요!";
+
+  const $ = (id) => document.getElementById(id);
+  const form = $("form"), nick = $("nick"), count = $("count"), err = $("err");
+  const result = $("result"), preview = $("preview"), cv = $("cv");
+  let currentBlob = null, currentName = "";
+
+  const loadImg = (src) => new Promise((res) => {
+    const im = new Image();
+    im.onload = () => res(im);
+    im.onerror = () => res(null);
+    im.src = src;
+  });
+  // 로고의 흰 배경을 투명하게 바꿔 연두 바탕 위에 자연스럽게 얹습니다.
+  const knockoutWhite = (img) => {
+    if (!img) return null;
+    const c = document.createElement("canvas");
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    const x = c.getContext("2d"); x.drawImage(img, 0, 0);
+    const d = x.getImageData(0, 0, c.width, c.height), p = d.data;
+    for (let i = 0; i < p.length; i += 4) {
+      const m = Math.min(p[i], p[i + 1], p[i + 2]);
+      if (m > 245) p[i + 3] = 0;
+      else if (m > 215) p[i + 3] = Math.round(p[i + 3] * (245 - m) / 30);
+    }
+    x.putImageData(d, 0, 0);
+    return c;
+  };
+  const assets = Promise.all([
+    loadImg("assets/cheer.png"),  // 인증서 캐릭터: 웰리 키미_화이팅 응원
+    loadImg(LOGO_SRC),
+  ]).then(([both, logoRaw]) => ({ both, logo: knockoutWhite(logoRaw) }));
+
+  assets.then(({ logo }) => {
+    if (logo) { const i = new Image(); i.src = logo.toDataURL("image/png"); i.alt = "한국암웨이 미래재단"; $("logoSlot").appendChild(i); }
+    else $("logoSlot").style.display = "none";
+  });
+
+  const fontsReady = Promise.all([
+    document.fonts.load('110px "Jua"', "건강더하기가족인증서"),
+    document.fonts.load('44px "Gowun Dodum"', "위가족은함께건강"),
+  ]).catch(() => {});
+
+  // ===== 입력 처리 =====
+  const clean = (s) => s.replace(/\s+/g, " ").trim().replace(/\s*(가족|네 가족|네가족)$/,"").trim();
+  const updateCount = () => { count.textContent = `${[...nick.value].length} / 12`; err.textContent = ""; };
+  nick.addEventListener("input", updateCount);
+  document.querySelectorAll(".chip").forEach((c) =>
+    c.addEventListener("click", () => { nick.value = c.textContent; updateCount(); nick.focus(); }));
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = clean(nick.value);
+    if (!name) { err.textContent = "가족 별칭을 입력해 주세요."; nick.focus(); return; }
+    $("makeBtn").disabled = true; $("makeBtn").textContent = "만드는 중…";
+    try {
+      await fontsReady;
+      // 입력한 별칭 글자의 폰트 조각까지 미리 불러와야 캔버스에 올바른 글꼴로 그려집니다.
+      await Promise.all([
+        document.fonts.load('112px "Jua"', `${name} 가족 ${ISSUER} 건강 더하기 인증 완료 인 증 서`),
+        document.fonts.load('44px "Gowun Dodum"', `${FOOTER}${BODY.join("")}0123456789년월일 CERTIFICATE`),
+      ]).catch(() => {});
+      const a = await assets;
+      draw(name, a);
+      currentName = name;
+      currentBlob = await new Promise((r) => cv.toBlob(r, "image/png"));
+      preview.src = cv.toDataURL("image/png");
+      result.classList.add("show");
+      $("formCard").style.display = "none";
+      const share = canShareFile();
+      $("shareBtn").style.display = share ? "" : "none";
+      document.querySelector(".actions").style.gridTemplateColumns = share ? "" : "1fr";
+      setTimeout(() => result.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    } finally {
+      $("makeBtn").disabled = false; $("makeBtn").textContent = "인증서 만들기";
+    }
+  });
+
+  $("againBtn").addEventListener("click", () => {
+    result.classList.remove("show");
+    $("formCard").style.display = "";
+    nick.select();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  const fileName = () => `건강더하기가족_${currentName.replace(/[\\/:*?"<>|\s]/g, "")}.png`;
+  const canShareFile = () => {
+    try { return !!(navigator.canShare && navigator.canShare({ files: [new File([new Blob()], "a.png", { type: "image/png" })] })); }
+    catch { return false; }
+  };
+
+  $("saveBtn").addEventListener("click", () => {
+    if (!currentBlob) return;
+    const url = URL.createObjectURL(currentBlob);
+    const a = document.createElement("a");
+    a.href = url; a.download = fileName();
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  });
+
+  $("shareBtn").addEventListener("click", async () => {
+    if (!currentBlob) return;
+    const file = new File([currentBlob], fileName(), { type: "image/png" });
+    try {
+      await navigator.share({ files: [file], title: "건강 더하기 가족 인증서", text: `우리 가족은 이제 '건강 더하기 가족'이에요!` });
+    } catch (_) { /* 사용자가 취소 */ }
+  });
+
+  // ===== 인증서 그리기 =====
+  const W = 1200, H = 1700;
+  // 메인 색상: 연두 #EDF5E3(바탕), 하늘 #CEEAF9(장식·강조)
+  const C = { green: "#00C987", greenDark: "#00A06B", sky: "#CEEAF9", yellow: "#FFC93C",
+              pink: "#FF8A8A", pinkSoft: "#FFD6D6", ink: "#1F2D2A", muted: "#5B6B66", paper: "#EDF5E3" };
+  const JUA = '"Jua", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
+  const GOWUN = '"Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
+
+  function rr(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+  function plus(ctx, cx, cy, s, color, rot = 0) {
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot); ctx.fillStyle = color;
+    const t = s * 0.36;
+    rr(ctx, -s / 2, -t / 2, s, t, t / 2); ctx.fill();
+    rr(ctx, -t / 2, -s / 2, t, s, t / 2); ctx.fill();
+    ctx.restore();
+  }
+  function heart(ctx, cx, cy, s, color) {
+    ctx.save(); ctx.translate(cx, cy); ctx.scale(s / 100, s / 100); ctx.fillStyle = color;
+    ctx.beginPath(); ctx.moveTo(0, 30);
+    ctx.bezierCurveTo(-60, -10, -40, -60, 0, -30);
+    ctx.bezierCurveTo(40, -60, 60, -10, 0, 30);
+    ctx.fill(); ctx.restore();
+  }
+  function fitFont(ctx, text, family, max, min, maxWidth) {
+    let size = max;
+    while (size > min) { ctx.font = `${size}px ${family}`; if (ctx.measureText(text).width <= maxWidth) break; size -= 2; }
+    ctx.font = `${size}px ${family}`;
+    return size;
+  }
+  function drawContain(ctx, img, x, y, w, h) {
+    const r = Math.min(w / img.width, h / img.height);
+    const dw = img.width * r, dh = img.height * r;
+    ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh), dw, dh);
+  }
+
+  function draw(name, a) {
+    const ctx = cv.getContext("2d");
+    ctx.clearRect(0, 0, W, H);
+    ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+
+    // 배경
+    ctx.fillStyle = C.paper; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = C.sky; ctx.beginPath(); ctx.arc(W + 40, -40, 360, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = C.sky; ctx.beginPath(); ctx.arc(-60, H + 20, 380, 0, Math.PI * 2); ctx.fill();
+
+    // 테두리
+    ctx.lineWidth = 16; ctx.strokeStyle = C.green; rr(ctx, 44, 44, W - 88, H - 88, 48); ctx.stroke();
+    ctx.lineWidth = 3; ctx.setLineDash([2, 14]); ctx.lineCap = "round"; ctx.strokeStyle = C.green;
+    rr(ctx, 76, 76, W - 152, H - 152, 32); ctx.stroke(); ctx.setLineDash([]);
+
+    // 장식 (+ 와 하트)
+    plus(ctx, 170, 190, 56, C.green, 0.15);
+    plus(ctx, 1040, 230, 40, C.yellow, -0.2);
+    plus(ctx, 1060, 760, 30, C.pink, 0.3);
+    plus(ctx, 140, 820, 34, C.yellow, -0.1);
+    heart(ctx, 1010, 160, 60, C.pink);
+    heart(ctx, 210, 300, 34, C.pinkSoft);
+
+    // 로고 또는 프로그램명
+    let y = 190;
+    if (a.logo) {
+      drawContain(ctx, a.logo, W / 2 - 200, y - 70, 400, 90);
+    } else {
+      ctx.font = `30px ${JUA}`; ctx.fillStyle = C.greenDark;
+      ctx.fillText("건강지킴이 · 웰리 & 키미", W / 2, y);
+    }
+
+    // 영문 라벨
+    y = 285;
+    ctx.font = `600 26px ${GOWUN}`; ctx.fillStyle = C.green;
+    if ("letterSpacing" in ctx) ctx.letterSpacing = "8px";
+    ctx.fillText("CERTIFICATE", W / 2 + 4, y);
+    if ("letterSpacing" in ctx) ctx.letterSpacing = "0px";
+
+    // 제목
+    y = 420;
+    ctx.font = `118px ${JUA}`;
+    const t1 = "건강 ", t2 = "더하기", t3 = " 가족";
+    const w1 = ctx.measureText(t1).width, w2 = ctx.measureText(t2).width, w3 = ctx.measureText(t3).width;
+    let x = W / 2 - (w1 + w2 + w3) / 2;
+    ctx.textAlign = "left";
+    ctx.fillStyle = C.ink; ctx.fillText(t1, x, y);
+    ctx.fillStyle = C.green; ctx.fillText(t2, x + w1, y);
+    ctx.fillStyle = C.ink; ctx.fillText(t3, x + w1 + w2, y);
+    ctx.textAlign = "center";
+    ctx.font = `64px ${JUA}`; ctx.fillStyle = C.ink;
+    ctx.fillText("인 증 서", W / 2, 510);
+
+    // 가족 별칭
+    y = 700;
+    const label = `${name} 가족`;
+    const size = fitFont(ctx, label, JUA, 112, 56, W - 300);
+    const lw = ctx.measureText(label).width;
+    ctx.fillStyle = C.sky;
+    rr(ctx, W / 2 - lw / 2 - 24, y - size * 0.32, lw + 48, size * 0.42, size * 0.2); ctx.fill();
+    ctx.fillStyle = C.ink; ctx.fillText(label, W / 2, y);
+
+    // 본문
+    ctx.font = `44px ${GOWUN}`; ctx.fillStyle = C.ink;
+    BODY.forEach((l, i) => ctx.fillText(l, W / 2, 850 + i * 76));
+
+    // 날짜
+    const d = new Date();
+    ctx.font = `40px ${GOWUN}`; ctx.fillStyle = C.muted;
+    ctx.fillText(`${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`, W / 2, 1120);
+
+    // 캐릭터
+    if (a.both) drawContain(ctx, a.both, 96, 1150, 620, 400);
+
+    // 도장 + 발급자
+    const sx = 930, sy = 1330;
+    ctx.save(); ctx.translate(sx, sy); ctx.rotate(-0.12);
+    ctx.strokeStyle = C.green; ctx.lineWidth = 8;
+    ctx.beginPath(); ctx.arc(0, 0, 112, 0, Math.PI * 2); ctx.stroke();
+    ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 96, 0, Math.PI * 2); ctx.stroke();
+    plus(ctx, 0, -38, 40, C.green);
+    ctx.fillStyle = C.green; ctx.font = `40px ${JUA}`; ctx.fillText("건강 더하기", 0, 30);
+    ctx.font = `30px ${JUA}`; ctx.fillText("인증 완료", 0, 72);
+    ctx.restore();
+
+    ctx.font = `40px ${JUA}`; ctx.fillStyle = C.ink;
+    ctx.fillText(ISSUER, sx, 1515);
+
+    // 맺음말 (한 줄)
+    ctx.fillStyle = C.muted;
+    fitFont(ctx, FOOTER, GOWUN, 32, 22, W - 240);
+    ctx.fillText(FOOTER, W / 2, 1596);
+  }
+})();
+</script>
+</body>
+</html>
